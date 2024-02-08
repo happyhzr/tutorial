@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, iteractableLayer);
         if (collider != null)
         {
-            Debug.Log("There is an NPC here!");
+            collider.GetComponent<Interactable>()?.Interact();
         }
     }
 
