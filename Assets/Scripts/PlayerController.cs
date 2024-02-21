@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask iteractableLayer;
 
+    public LayerMask battleLayer;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -58,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Vector3 facingDir = new(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
         var interactPos = transform.position + facingDir;
         Debug.DrawLine(transform.position, interactPos, Color.red, 1f);
-        Debug.Log($"{transform.position}, {interactPos}");
+        //Debug.Log($"{transform.position}, {interactPos}");
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, iteractableLayer);
         if (collider != null)
         {
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
         isMoving = false;
+        CheckForEncounters();
     }
 
     private bool IsWalkable(Vector3 targetPos)
@@ -85,5 +88,13 @@ public class PlayerController : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.01f, battleLayer) != null)
+        {
+            Debug.Log("A battle has started!");
+        }
     }
 }
